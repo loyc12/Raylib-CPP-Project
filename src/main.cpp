@@ -1,27 +1,80 @@
 #include "../inc/deps.hpp"
 #include "../inc/ball.hpp"
 
-int main()
+
+void inputsStep( Ball *ball )
 {
-	Color darkGreen = Color{20, 160, 133, 255};
+	if ( ball != nullptr )
+		ball->UpdateInputs();
+	else
+		cerr << "error : inputsStep() : ball pointer needed" << endl;
+}
 
-	const int screenWidth = 800;
-	const int screenHeight = 600;
+void scriptsStep( Ball *ball )
+{
+	if ( ball != nullptr )
+		ball->UpdateScripts();
+	else
+		cerr << "error : scriptsStep() : ball pointer needed" << endl;
+}
 
+void physicsStep( Ball *ball )
+{
+	if ( ball != nullptr )
+		ball->UpdatePhysics();
+	else
+		cerr << "error : physicsStep() : ball pointer needed" << endl;
+}
+
+void graphicsStep( Ball *ball )
+{
+	static Color bgColor = Color{ 20, 40, 60, 255 };
+
+	BeginDrawing();
+	{
+		ClearBackground( bgColor );
+
+		if ( ball != nullptr )
+			ball->UpdateGraphics(); // IDEA : split update and draw methods
+	}
+	EndDrawing();
+}
+
+void initStep( const char* title)
+{
+	const int screenWidth =		1024;
+	const int screenHeight =	720;
+	const int targetFPS = 		60;
+
+	InitWindow( screenWidth, screenHeight, title );
+	SetTargetFPS( targetFPS );
+
+	graphicsStep( nullptr );
+}
+
+void gameLoop()
+{
 	Ball ball = Ball();
 
-	InitWindow(screenWidth, screenHeight, "My first RAYLIB program!");
-	SetTargetFPS(60);
-
-	while (!WindowShouldClose())
+	while ( !WindowShouldClose() )
 	{
-		BeginDrawing();
-		ClearBackground(darkGreen);
-		ball.Update();
-		ball.Draw();
-		EndDrawing();
+		inputsStep( &ball );
+		scriptsStep( &ball );
+		physicsStep( &ball );
+		graphicsStep( &ball );
 	}
+}
 
+void closeStep()
+{
 	CloseWindow();
-	return 0;
+}
+
+int main()
+{
+	initStep("les get dis bish ruhnin" );
+	{
+		gameLoop();
+	}
+	closeStep();
 }
