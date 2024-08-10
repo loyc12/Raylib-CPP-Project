@@ -29,7 +29,7 @@ default: compile
 include mk-inc/Settings.mk
 
 # Define required raylib variables
-PROJECT_NAME		?= $(EXEC_NAME)
+PROJECT_NAME		?= testProject
 RAYLIB_VERSION	?= 5.0.0
 RAYLIB_PATH			?= ../.. # NOTE : Specific to my PC
 
@@ -335,15 +335,12 @@ endif
 # Define a recursive wildcard function
 rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
 
-# Define all source files required
-INC_DIR = inc
-SRC_DIR = src
-OBJ_DIR = obj
-
 # Define all object files from source files
-SRC = $(call rwildcard, $(SRC_DIR)/, *.cpp)
-OBJS = $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
-#OBJS ?= main.cpp
+SRCS = $(call rwildcard, $(SRC_DIR)/, *.cpp)
+OBJS = $(SRCS:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
+
+# Define all the subdirectories that object files will be placed in
+OBJ_SUB_DIRS = $(sort $(dir $(OBJS)))
 
 # For Android platform we call a custom Makefile.Android
 ifeq ($(PLATFORM),PLATFORM_ANDROID)

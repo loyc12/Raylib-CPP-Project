@@ -33,9 +33,9 @@ void Ball::UpdateScripts()
 	if ( this->x + this->radius >= GetScreenWidth() )
 		INFO( "Ball hit right wall", "Ball::updateScripts" );
 
-	if ( this->y - this->radius <= 0  )
+	if ( this->y - this->radius <= 0 )
 		INFO( "Ball hit top wall", "Ball::updateScripts" );
-	if ( this->y + this->radius >= GetScreenHeight()  )
+	if ( this->y + this->radius >= GetScreenHeight() )
 		INFO( "Ball hit bottom wall", "Ball::updateScripts" );
 }
 

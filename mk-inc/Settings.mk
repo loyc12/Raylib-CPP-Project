@@ -1,6 +1,12 @@
 
 # Defines executable file name
-EXEC_NAME = TestGame.tmp
+PROJECT_NAME = TestGame
+
+
+# Define all source files required
+INC_DIR = inc
+SRC_DIR = src
+OBJ_DIR = obj
 
 
 # Defines compiler flags:

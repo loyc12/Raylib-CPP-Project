@@ -35,10 +35,10 @@ using std::abs;
 /* ==== addons ==== */
 #include "colors.hpp"
 
-void print_debug( const string msg = "Debug" );
-void print_error( const char *msg, const char *type = "Error", const char *src = "unkown", const char *C_COL = C_DEF );
+//void print_debug( const string msg = "..." );
+void print_msg( const char *msg, const char *type = "Unspecified", const char *src_fct = "unkown", const char *C_COL = C_DEF );
 
-void ERROR( const char *msg = "Error", const char *src = "unkown" );
-void WARN ( const char *msg = "Warning", const char *src = "unkown" );
-void INFO ( const char *msg = "Info", const char *src = "unkown" );
-void DEBUG( const char *msg = "Debug", const char *src = "unkown" );
+void ERROR( const char *msg = "Error",   const char *src_fct = "unkown" );
+void WARN ( const char *msg = "Warning", const char *src_fct = "unkown" );
+void INFO ( const char *msg = "Info",    const char *src_fct = "unkown" );
+void DEBUG( const char *msg = "Debug",   const char *src_fct = "unkown" );
