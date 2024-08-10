@@ -4,7 +4,7 @@
 # Default target entry
 # NOTE: We call this Makefile target or Makefile.Android target
 compile: $(PROJECT_NAME)
-# @$(MAKE) $(MAKEFILE_PARAMS)
+# @$(MAKE) $(MAKEFILE_PARAMS) # NOTE: Enable this to compile on Android
 	@printf "Compilation finished\n"
 
 # Project target defined by PROJECT_NAME
