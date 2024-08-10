@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+# Others
+*.dsym
+*.a
+*.tmp
+*.DS_Store
