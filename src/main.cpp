@@ -1,13 +1,16 @@
 #include "../inc/deps.hpp"
 #include "../inc/ball.hpp"
 
+//===========================================================//
+//                           STEPS                           //
+//===========================================================//
 
 void inputsStep( Ball *ball )
 {
 	if ( ball != nullptr )
 		ball->UpdateInputs();
 	else
-		cerr << "error : inputsStep() : ball pointer needed" << endl;
+		WARN( "ball pointer needed", "main:inputsStep" );
 }
 
 void scriptsStep( Ball *ball )
@@ -15,7 +18,7 @@ void scriptsStep( Ball *ball )
 	if ( ball != nullptr )
 		ball->UpdateScripts();
 	else
-		cerr << "error : scriptsStep() : ball pointer needed" << endl;
+		WARN( "ball pointer needed", "main:scriptsStep" );
 }
 
 void physicsStep( Ball *ball )
@@ -23,7 +26,7 @@ void physicsStep( Ball *ball )
 	if ( ball != nullptr )
 		ball->UpdatePhysics();
 	else
-		cerr << "error : physicsStep() : ball pointer needed" << endl;
+		WARN( "ball pointer needed", "main:physicsStep" );
 }
 
 void graphicsStep( Ball *ball )
@@ -40,6 +43,10 @@ void graphicsStep( Ball *ball )
 	EndDrawing();
 }
 
+//===========================================================//
+//                        INIT && CLOSE                      //
+//===========================================================//
+
 void initStep( const char* title)
 {
 	const int screenWidth =		1024;
@@ -52,9 +59,18 @@ void initStep( const char* title)
 	graphicsStep( nullptr );
 }
 
+void closeStep()
+{
+	CloseWindow();
+}
+
+//===========================================================//
+//                         CORE LOOP                         //
+//===========================================================//
+
 void gameLoop()
 {
-	Ball ball = Ball();
+	Ball ball;
 
 	while ( !WindowShouldClose() )
 	{
@@ -63,11 +79,6 @@ void gameLoop()
 		physicsStep( &ball );
 		graphicsStep( &ball );
 	}
-}
-
-void closeStep()
-{
-	CloseWindow();
 }
 
 int main()

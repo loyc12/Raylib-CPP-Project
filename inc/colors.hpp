@@ -1,0 +1,32 @@
+#pragma once
+
+//#define C_ESC		"\033"
+#define C_RST		"\033[0m"
+#define C_DEF		"\033[39m"
+
+#define C_BLK		"\033[30m"
+#define C_RED		"\033[31m"
+#define C_GRN		"\033[32m"
+#define C_YEL		"\033[33m"
+#define C_BLU		"\033[34m"
+#define C_MAG		"\033[35m"
+#define C_CYN		"\033[36m"
+#define C_WHT		"\033[37m"
+
+#define C_B_BLK	"\033[40m"
+#define C_B_RED	"\033[41m"
+#define C_B_GRN	"\033[42m"
+#define C_B_YEL	"\033[43m"
+#define C_B_BLU	"\033[44m"
+#define C_B_MAG	"\033[45m"
+#define C_B_CYN	"\033[46m"
+#define C_B_WHT	"\033[47m"
+
+#define C_M_BLD	"\033[1m"
+#define C_M_DIM	"\033[2m"
+#define C_M_ITA	"\033[3m"
+#define C_M_UND	"\033[4m"
+#define C_M_BLN	"\033[5m"
+#define C_M_REV	"\033[7m"
+#define C_M_HID	"\033[8m"
+#define C_M_STR	"\033[9m"

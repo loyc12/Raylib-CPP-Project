@@ -1,4 +1,3 @@
-#include "../inc/deps.hpp"
 #include "../inc/ball.hpp"
 
 Ball::Ball()
@@ -29,7 +28,15 @@ void Ball::UpdateInputs()
 
 void Ball::UpdateScripts()
 {
-	// nothing here yet
+	if ( this->x - this->radius <= 0 )
+		INFO( "Ball hit left wall", "Ball::updateScripts" );
+	if ( this->x + this->radius >= GetScreenWidth() )
+		INFO( "Ball hit right wall", "Ball::updateScripts" );
+
+	if ( this->y - this->radius <= 0  )
+		INFO( "Ball hit top wall", "Ball::updateScripts" );
+	if ( this->y + this->radius >= GetScreenHeight()  )
+		INFO( "Ball hit bottom wall", "Ball::updateScripts" );
 }
 
 void Ball::UpdatePhysics()
@@ -104,7 +111,6 @@ void Ball::ClampSelf()
 		this->x = GetScreenWidth() - this->radius;
 	if ( this->x - this->radius <= 0 )
 		this->x = this->radius;
-
 	if ( this->y + this->radius >= GetScreenHeight() )
 		this->y = GetScreenHeight() - this->radius;
 	if ( this->y - this->radius <= 0 )

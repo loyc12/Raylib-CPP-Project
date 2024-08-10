@@ -1,6 +1,6 @@
 
 # Defines executable file name
-EXEC_NAME = Test_Game
+EXEC_NAME = TestGame.tmp
 
 
 # Defines compiler flags:
