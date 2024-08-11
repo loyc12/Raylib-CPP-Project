@@ -18,10 +18,10 @@ void WARN ( const char *msg, const char *src_fct )
 void INFO ( const char *msg, const char *src_fct )
 {
 	if ( LOG_LVL >= INFO_LVL )
-		print_msg( "INFO ", msg, src_fct, C_CYN );
+		print_msg( "INFO ", msg, src_fct, C_GRN );
 }
 void DEBUG( const char *msg, const char *src_fct )
 {
 	if ( LOG_LVL >= DEBUG_LVL )
-		print_msg( "DEBUG", msg, src_fct, C_GRN );
+		print_msg( "DEBUG", msg, src_fct, C_CYN );
 }

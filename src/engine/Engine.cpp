@@ -1,4 +1,5 @@
 #include "../../inc/Engine.hpp"
+#include <raylib.h>
 
 void Engine::inputsStep()
 {
@@ -7,6 +8,8 @@ void Engine::inputsStep()
 
 	if ( IsKeyPressed( KEY_P ) )
 		this->togglePause();
+	if ( IsKeyPressed( KEY_ESCAPE ) )
+		this->gameState = GAME_STOP;
 
 }
 
@@ -66,12 +69,13 @@ void Engine::closeStep()
 	INFO( "Closing game", "closeStep" );
 
 	CloseWindow();
-	delete tilemap;
+
+	delete tilemap;  tilemap = nullptr;
 }
 
 void Engine::togglePause()
 {
-	INFO( "Pausing / Unpausing", "togglePause" );
+	DEBUG( "Here", "togglePause" );
 
 	if ( this->gameState != GAME_PAUSE && this->gameState != GAME_RUN )
 	{
@@ -113,10 +117,11 @@ void Engine::runGame()
 		{
 			case GAME_INIT:
 				WARN( "Cannot run an uninitialzed game", "runGame" );
-				break;
+				return;
 
 			case GAME_RUN:
 			{
+				DEBUG( "Begining a game loop...", "runGame" );
 				this->inputsStep();
 				this->scriptsStep();
 				this->physicsStep();
@@ -126,21 +131,26 @@ void Engine::runGame()
 
 			case GAME_PAUSE:
 			{
+				DEBUG( "Attempting to pause game", "runGame" );
 				if ( this->isRunning )
 					this->pauseStep();
 				else
+				{
 					this->inputsStep();
+					this->drawingStep();
+				}
 			}	break;
 
 			case GAME_RESUME:
 			{
+				DEBUG( "Attempting to resume game", "runGame" );
 				if ( !this->isRunning )
 					this->resumeStep();
 			}	break;
 
 			case GAME_STOP:
-				this->closeStep();
-				exit( 0 );
+				INFO( "Stopping game", "runGame" );
+				return;
 		}
 	}
 }
