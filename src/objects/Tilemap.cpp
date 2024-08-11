@@ -133,7 +133,7 @@ iar2D Tilemap::getScreenCoords( uiar2D tileCoords )
 			break;
 
 		case GRID_ISO:
-			screenX = ( x - y ) * this->tileScale / 2;
+			screenX = ( x - y ) * this->tileScale;
 			screenY = ( x + y ) * this->tileScale / 2;
 			break;
 
@@ -160,7 +160,7 @@ uiar2D Tilemap::getTileCoords( uiar2D screenCoords )
 			break;
 		case GRID_ISO:
 		{
-			tileX = (( 2 * y ) + x ) / this->tileScale; // TODO : is this broken ???
+			tileX = ( y + x ) / this->tileScale; // TODO : is this broken ???
 			tileY = (( 2 * y ) - x ) / this->tileScale;
 			break;
 		}
