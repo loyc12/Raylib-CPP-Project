@@ -49,9 +49,9 @@ void graphicsStep( Ball *ball )
 
 void initStep( const char* title)
 {
-	const int screenWidth =		1024;
-	const int screenHeight =	720;
-	const int targetFPS = 		60;
+	const int screenWidth = 1024;
+	const int screenHeight = 720;
+	const int targetFPS = 60;
 
 	InitWindow( screenWidth, screenHeight, title );
 	SetTargetFPS( targetFPS );
@@ -68,24 +68,24 @@ void closeStep()
 //                         CORE LOOP                         //
 //===========================================================//
 
-void gameLoop()
+void gameLoop( Ball *ball )
 {
-	Ball ball;
-
 	while ( !WindowShouldClose() )
 	{
-		inputsStep( &ball );
-		scriptsStep( &ball );
-		physicsStep( &ball );
-		graphicsStep( &ball );
+		inputsStep( ball );
+		scriptsStep( ball );
+		physicsStep( ball );
+		graphicsStep( ball );
 	}
 }
 
 int main()
 {
+	Ball ball;
+
 	initStep("les get dis bish ruhnin" );
 	{
-		gameLoop();
+		gameLoop( &ball );
 	}
 	closeStep();
 }

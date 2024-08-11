@@ -11,6 +11,7 @@ using std::cin;
 using std::cout;
 using std::cerr;
 using std::endl;
+using std::string;
 
 using std::iostream;
 using std::istream;
@@ -21,10 +22,20 @@ using std::ifstream;
 using std::ofstream;
 
 /* ==== containers ==== */
+#include <array>
 #include <vector>
 
-using std::string;
+using std::array;
 using std::vector;
+
+#define arr1 array< int, 1 >
+#define arr2 array< int, 2 >
+#define arr3 array< int, 3 >
+
+#define IX 0
+#define IY 1
+#define IZ 2
+#define IW 3
 
 /* ==== math ==== */
 
