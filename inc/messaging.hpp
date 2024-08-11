@@ -1,16 +1,21 @@
 #pragma once
 
-#include <raylib.h>
-
-/* ==== messaging ====*/
 #include <string>
 #include <iostream>
 #include <fstream>
 #include <sstream>
 
+#include "colors.hpp"
+
+class ExtendedStringStream : public std::stringstream
+{
+	private: std::string 	cached_str;
+	public:  const char*	c_str()  { cached_str = this->str();  return ( cached_str.c_str() ); }
+};
+
 using std::endl;
-using std::string;
-typedef std::stringstream sstream;
+typedef std::string str;
+typedef ExtendedStringStream sstream;
 
 using std::cin;
 using std::cout;
@@ -24,34 +29,19 @@ using std::fstream;
 using std::ifstream;
 using std::ofstream;
 
-/* ==== containers ==== */
-#include <array>
-#include <vector>
+typedef enum log_level_e
+{
+	ERROR_LVL,
+	WARN_LVL,
+	INFO_LVL,
+	DEBUG_LVL
+}				log_level_t;
 
-using std::array;
-using std::vector;
+#define LOG_LVL DEBUG_LVL
 
-#define arr1 array< int, 1 >
-#define arr2 array< int, 2 >
-#define arr3 array< int, 3 >
 
-#define IX 0
-#define IY 1
-#define IZ 2
-#define IW 3
+/* ================ from Addons.cpp ================ */
 
-/* ==== math ==== */
-
-typedef unsigned char byte;
-
-using std::min;
-using std::max;
-using std::abs;
-
-/* ==== addons ==== */
-#include "colors.hpp"
-
-//void print_debug( const string msg = "..." );
 void print_msg( const char *msg, const char *type = "Unspecified", const char *src_fct = "unkown", const char *C_COL = C_DEF );
 
 void ERROR( const char *msg = "Error",   const char *src_fct = "unkown" );

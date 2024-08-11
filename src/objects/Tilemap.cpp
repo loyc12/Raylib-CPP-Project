@@ -1,6 +1,6 @@
 #include "../../inc/Tilemap.hpp"
 
-void printTile( t_tile *tile )
+void printTile( tile_t *tile )
 {
 	switch ( tile->type )
 	{
@@ -22,42 +22,42 @@ void printTile( t_tile *tile )
 	}
 }
 
-void printFullTile( t_tile *tile )
+void printFullTile( tile_t *tile )
 {
 	cout << "Tile #" << tile->id << " at [ " << tile->pos[ IX ] << ":" << tile->pos[ IY ] << " ]" << endl;
 
-	if ( tile->no != nullptr )
-		cout << "no : Tile #" << tile->no->id << " at [ " << tile->no->pos[ IX ] << ":" << tile->no->pos[ IY ] << " ]" << endl;
-	if ( tile->ne != nullptr )
-		cout << "ne : Tile #" << tile->ne->id << " at [ " << tile->ne->pos[ IX ] << ":" << tile->ne->pos[ IY ] << " ]" << endl;
-	if ( tile->ea != nullptr )
-		cout << "ea : Tile #" << tile->ea->id << " at [ " << tile->ea->pos[ IX ] << ":" << tile->ea->pos[ IY ] << " ]" << endl;
-	if ( tile->se != nullptr )
-		cout << "se : Tile #" << tile->se->id << " at [ " << tile->se->pos[ IX ] << ":" << tile->se->pos[ IY ] << " ]" << endl;
-	if ( tile->so != nullptr )
-		cout << "so : Tile #" << tile->so->id << " at [ " << tile->so->pos[ IX ] << ":" << tile->so->pos[ IY ] << " ]" << endl;
-	if ( tile->sw != nullptr )
-		cout << "sw : Tile #" << tile->sw->id << " at [ " << tile->sw->pos[ IX ] << ":" << tile->sw->pos[ IY ] << " ]" << endl;
-	if ( tile->we != nullptr )
-		cout << "we : Tile #" << tile->we->id << " at [ " << tile->we->pos[ IX ] << ":" << tile->we->pos[ IY ] << " ]" << endl;
-	if ( tile->nw != nullptr )
-		cout << "nw : Tile #" << tile->nw->id << " at [ " << tile->nw->pos[ IX ] << ":" << tile->nw->pos[ IY ] << " ]" << endl;
+	if ( tile->nbrs[ NO ] != nullptr )
+		cout << "no : Tile #" << tile->nbrs[ NO ]->id << " at [ " << tile->nbrs[ NO ]->pos[ IX ] << ":" << tile->nbrs[ NO ]->pos[ IY ] << " ]" << endl;
+	if ( tile->nbrs[ NE ] != nullptr )
+		cout << "ne : Tile #" << tile->nbrs[ NE ]->id << " at [ " << tile->nbrs[ NE ]->pos[ IX ] << ":" << tile->nbrs[ NE ]->pos[ IY ] << " ]" << endl;
+	if ( tile->nbrs[ EA ] != nullptr )
+		cout << "ea : Tile #" << tile->nbrs[ EA ]->id << " at [ " << tile->nbrs[ EA ]->pos[ IX ] << ":" << tile->nbrs[ EA ]->pos[ IY ] << " ]" << endl;
+	if ( tile->nbrs[ SE ] != nullptr )
+		cout << "se : Tile #" << tile->nbrs[ SE ]->id << " at [ " << tile->nbrs[ SE ]->pos[ IX ] << ":" << tile->nbrs[ SE ]->pos[ IY ] << " ]" << endl;
+	if ( tile->nbrs[ SO ] != nullptr )
+		cout << "so : Tile #" << tile->nbrs[ SO ]->id << " at [ " << tile->nbrs[ SO ]->pos[ IX ] << ":" << tile->nbrs[ SO ]->pos[ IY ] << " ]" << endl;
+	if ( tile->nbrs[ SW ] != nullptr )
+		cout << "sw : Tile #" << tile->nbrs[ SW ]->id << " at [ " << tile->nbrs[ SW ]->pos[ IX ] << ":" << tile->nbrs[ SW ]->pos[ IY ] << " ]" << endl;
+	if ( tile->nbrs[ WE ] != nullptr )
+		cout << "we : Tile #" << tile->nbrs[ WE ]->id << " at [ " << tile->nbrs[ WE ]->pos[ IX ] << ":" << tile->nbrs[ WE ]->pos[ IY ] << " ]" << endl;
+	if ( tile->nbrs[ NW ] != nullptr )
+		cout << "nw : Tile #" << tile->nbrs[ NW ]->id << " at [ " << tile->nbrs[ NW ]->pos[ IX ] << ":" << tile->nbrs[ NW ]->pos[ IY ] << " ]" << endl;
 
 	cout << endl;
 }
 
-bool areTilesNeighbors( t_tile *tile1, t_tile *tile2 )
+bool areTilesNeighbors( tile_t *tile1, tile_t *tile2 )
 {
 	if ( tile1->pos[ IX ] == tile2->pos[ IX ] && tile1->pos[ IY ] == tile2->pos[ IY ] )
 		return false;
-	if ( abs( tile1->pos[ IX ] - tile2->pos[ IX ] ) > 1 )
+	if ( dif( tile1->pos[ IX ], tile2->pos[ IX ] ) > 1 )
 		return false;
-	if ( abs( tile1->pos[ IY ] - tile2->pos[ IY ] ) > 1 )
+	if ( dif( tile1->pos[ IY ], tile2->pos[ IY ] ) > 1 )
 		return false;
 	return true;
 }
 
-void linkTiles( t_tile *tile1, t_tile *tile2 )
+void linkTiles( tile_t *tile1, tile_t *tile2 )
 {
 	if ( !areTilesNeighbors( tile1, tile2 ))
 	{
@@ -71,58 +71,77 @@ void linkTiles( t_tile *tile1, t_tile *tile2 )
 	{
 		if ( tile1->pos[ IY ] > tile2->pos[ IY ])
 		{
-			tile1->nw = tile2;
-			tile2->se = tile1;
+			tile1->nbrs[ NW ] = tile2;
+			tile2->nbrs[ SE ] = tile1;
 		}
 		else if ( tile1->pos[ IY ] < tile2->pos[ IY ])
 		{
-			tile1->sw = tile2;
-			tile2->ne = tile1;
+			tile1->nbrs[ SW ] = tile2;
+			tile2->nbrs[ NE ] = tile1;
 		}
 		else
 		{
-			tile1->we = tile2;
-			tile2->ea = tile1;
+			tile1->nbrs[ WE ] = tile2;
+			tile2->nbrs[ EA ] = tile1;
 		}
 	}
 	else if ( tile1->pos[ IX ] < tile2->pos[ IX ])
 	{
 		if ( tile1->pos[ IY ] > tile2->pos[ IY ])
 		{
-			tile1->ne = tile2;
-			tile2->sw = tile1;
+			tile1->nbrs[ NE ] = tile2;
+			tile2->nbrs[ SW ] = tile1;
 		}
 		else if ( tile1->pos[ IY ] < tile2->pos[ IY ])
 		{
-			tile1->se = tile2;
-			tile2->nw = tile1;
+			tile1->nbrs[ SE ] = tile2;
+			tile2->nbrs[ NW ] = tile1;
 		}
 		else
 		{
-			tile1->ea = tile2;
-			tile2->we = tile1;
+			tile1->nbrs[ EA ] = tile2;
+			tile2->nbrs[ WE ] = tile1;
 		}
 	}
 	else // tile1->pos[ IX ] == tile2->pos[ IX ]
 	{
 		if ( tile1->pos[ IY ] > tile2->pos[ IY ])
 		{
-			tile1->no = tile2;
-			tile2->so = tile1;
+			tile1->nbrs[ NO ] = tile2;
+			tile2->nbrs[ SO ] = tile1;
 		}
 		else if ( tile1->pos[ IY ] < tile2->pos[ IY ])
 		{
-			tile1->so = tile2;
-			tile2->no = tile1;
+			tile1->nbrs[ SO ] = tile2;
+			tile2->nbrs[ NO ] = tile1;
 		}
 		else
 			WARN( "How did you get here ?!?", "linkTiles" );
 	}
 }
 
-t_tile_type randomTileType()
+void linkToNeighbors( tile_t *tile, tile_map_t *map )
 {
-	t_tile_type tileType = TILE_EMPTY;
+	uint x = tile->pos[ IX ];
+	uint y = tile->pos[ IY ];
+
+	if ( tile->nbrs[ WE ] == nullptr && x > 0 )
+		linkTiles( tile, &( *map )[ y + 0 ][ x - 1 ]);
+
+	if ( tile->nbrs[ NW ] == nullptr && x > 0 && y > 0 )
+		linkTiles( tile, &( *map )[ y - 1 ][ x - 1 ]);
+
+	if ( tile->nbrs[ NO ] == nullptr && y > 0 )
+		linkTiles( tile, &( *map )[ y - 1 ][ x + 0 ]);
+
+	if ( tile->nbrs[ NE ] == nullptr && x < map->size() - 1 && y > 0 )		// NOTE : skip this step in HEX grids (?)
+		linkTiles( tile, &( *map )[ y - 1 ][ x + 1 ]);
+
+}
+
+tile_type_t randomTileType()
+{
+	tile_type_t tileType = TILE_EMPTY;
 
 	byte r = rand() % 4;
 	switch ( r )
@@ -149,13 +168,13 @@ t_tile_type randomTileType()
 /* ================ Tilemap Class ================ */
 
 
-Tilemap::Tilemap( uint _size, t_grid_type _gridType )
+Tilemap::Tilemap( uint _size, grid_type_t _gridType )
 {
 	this->size = _size;
 	this->maxTileID = 0;
-	this->offset = arr2{ 0, 0 }; // TODO : center it ( via map dimensions )
+	this->offset = uiar2D{ 0, 0 }; // TODO : center it ( via map dimensions )
 	this->gridType = _gridType;
-	this->map = t_tile_map( this->size, t_tile_row( this->size ));
+	this->map = tile_map_t( this->size, tile_row_t( this->size ));
 
 	this->initMap();
 }
@@ -166,23 +185,15 @@ void Tilemap::initMap()
 	{
 		for ( uint x = 0; x < this->size; x++ )
 		{
-			t_tile *newTile = &( this->map[ y ][ x ]);
+			tile_t *newTile = &( this->map[ y ][ x ]);
 
 			newTile->id = this->maxTileID++;
-			newTile->pos = arr2{ (int)x, (int)y };
+			newTile->pos = uiar2D{ x, y };
 
 			newTile->isPopulated = false;
 			newTile->type = TILE_EMPTY;
 
-			// Linking bidirectionally with neighbors
-			if ( x > 0 )
-				linkTiles( newTile, (t_tile *)&( this->map[ y + 0 ][ x - 1 ]));
-			if ( x > 0 && y > 0 )
-				linkTiles( newTile, (t_tile *)&( this->map[ y - 1 ][ x - 1 ]));
-			if ( y > 0 )
-				linkTiles( newTile, (t_tile *)&( this->map[ y - 1 ][ x + 0 ]));
-			if ( x < this->size - 1 && y > 0 ) //																						NOTE : skip this step in HEX grids (?)
-				linkTiles( newTile, (t_tile *)&( this->map[ y - 1 ][ x + 1 ]));
+			linkToNeighbors( newTile, &( this->map ));
 		}
 	}
 }
@@ -212,18 +223,18 @@ void Tilemap::populateMap()
 	}
 }
 
-t_tile *Tilemap::getTile( uint x, uint y ) { return &this->map[ y ][ x ]; }
-t_tile *Tilemap::setTile( uint x, uint y, t_tile_type _tileType )
+tile_t *Tilemap::getTile( uint x, uint y ) { return &this->map[ y ][ x ]; }
+tile_t *Tilemap::setTile( uint x, uint y, tile_type_t _tileType )
 {
 	this->map[ y ][ x ].type = _tileType;
 	return &this->map[ y ][ x ];
 }
 
-void Tilemap::setOffset( uint x, uint y ) { this->offset = arr2{ (int)x, (int)y }; }
-void Tilemap::setOffset( arr2 _offset ) { this->offset = _offset; }
-arr2 Tilemap::getOffset() { return this->offset; }
+void Tilemap::setOffset( uint x, uint y ) { this->offset = uiar2D{ x, y }; }
+void Tilemap::setOffset( uiar2D _offset ) { this->offset = _offset; }
+uiar2D Tilemap::getOffset() { return this->offset; }
 
-void Tilemap::iterOnTiles( void ( *f )( t_tile* ))
+void Tilemap::iterOnTiles( void ( *f )( tile_t* ))
 {
 	for ( uint y = 0; y < this->size; y++ )
 	{

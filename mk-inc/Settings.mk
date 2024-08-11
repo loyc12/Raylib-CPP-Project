@@ -13,7 +13,7 @@ OBJ_DIR = obj
 #  -O0									defines optimization level (no optimization, better for debugging)
 #  -O1									defines optimization level
 #  -g										include debug information on compilation
-#  -s										strip unnecessary data from build -> do not use in debug builds
+#  -s										strip unnecesiary data from build -> do not use in debug builds
 #  -Wall								turns on most, but not all, compiler warnings
 #  -std=c99							defines C language mode (standard C from 1999 revision)
 #  -std=gnu99						defines C language mode (GNU C from 1999 revision)
