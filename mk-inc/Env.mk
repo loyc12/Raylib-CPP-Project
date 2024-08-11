@@ -327,16 +327,6 @@ else ifeq ($(PLATFORM),PLATFORM_WEB)
 	LDLIBS = $(RAYLIB_RELEASE_PATH)/libraylib.bc
 endif
 
-# Define a recursive wildcard function
-rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
-
-# Define all object files from source files
-SRCS = $(call rwildcard, $(SRC_DIR)/, *.cpp)
-OBJS = $(SRCS:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
-
-# Define all the subdirectories that object files will be placed in
-OBJ_SUB_DIRS = $(sort $(dir $(OBJS)))
-
 # For Android platform we call a custom Makefile.Android
 ifeq ($(PLATFORM),PLATFORM_ANDROID)
 	MAKEFILE_PARAMS = -f Makefile.Android

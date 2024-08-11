@@ -12,13 +12,7 @@
 using std::array;
 using std::vector;
 
-typedef enum index_e
-{
-	IX,
-	IY,
-	IZ,
-	IW
-}				index_t;
+typedef enum index_e { IX, IY, IZ, IW } index_t;
 
 #define iar2D array< int, 2 >
 #define iar3D array< int, 3 >

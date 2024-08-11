@@ -7,19 +7,16 @@
 
 #include "colors.hpp"
 
-class ExtendedStringStream : public std::stringstream
-{
-	private: std::string 	cached_str;
-	public:  const char*	c_str()  { cached_str = this->str();  return ( cached_str.c_str() ); }
-};
+typedef enum log_lvl_e { ERROR_LVL, WARN_LVL, INFO_LVL, DEBUG_LVL } log_lvl_t;
 
-using std::endl;
-typedef std::string str;
-typedef ExtendedStringStream sstream;
+#define LOG_LVL INFO_LVL
 
 using std::cin;
 using std::cout;
 using std::cerr;
+
+using std::endl;
+typedef std::string str;
 
 using std::iostream;
 using std::istream;
@@ -29,16 +26,13 @@ using std::fstream;
 using std::ifstream;
 using std::ofstream;
 
-typedef enum log_level_e
+// custom stringstream class that allows for c_str() method
+class ExtendedStringStream : public std::stringstream
 {
-	ERROR_LVL,
-	WARN_LVL,
-	INFO_LVL,
-	DEBUG_LVL
-}				log_level_t;
-
-#define LOG_LVL DEBUG_LVL
-
+	private: std::string 	cached_str;
+	public:  const char*	c_str()  { cached_str = this->str();  return ( cached_str.c_str() ); }
+};
+typedef ExtendedStringStream sstream;
 
 /* ================ from Addons.cpp ================ */
 

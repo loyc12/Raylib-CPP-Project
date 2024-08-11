@@ -55,7 +55,7 @@ void Engine::initStep()
 	InitWindow( this->screenWidth, this->screenHeight, this->gameTitle.c_str() );
 	SetTargetFPS( targetFPS );
 
-	this->tilemap = new Tilemap( NEW_MAP_SIZE, GRID_DEF );
+	this->tilemap = new Tilemap( NEW_MAP_SIZE, GRID_SQR );
 	this->tilemap->populateMap();
 
 	this->gameState = GAME_RUN;
@@ -77,7 +77,7 @@ void Engine::togglePause()
 	{
 		sstream ss;
 		ss << "Cannot pause game from current state: " << this->gameState;
-		WARN( ss.str().c_str(), "togglePause" );
+		WARN( ss.c_str(), "togglePause" );
 		return;
 	}
 

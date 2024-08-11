@@ -1,12 +1,11 @@
 #include "../inc/core.hpp"
-#include "../inc/Tilemap.hpp"
-
+#include "../inc/Engine.hpp"
 
 void testTilemap()
 {
 	cout << "testing Tilemap" << endl << endl;
 
-	Tilemap map( 20, GRID_DEF );
+	Tilemap map( 20, GRID_SQR );
 	map.populateMap();
 	map.printMap();
 	printFullTile( map.getTile( 7, 7 ) );
@@ -14,5 +13,7 @@ void testTilemap()
 
 int main()
 {
-	testTilemap();
+	Engine engine( "Testgame", 1024, 720, 60 );
+
+	engine.runGame();
 }

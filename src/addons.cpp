@@ -1,6 +1,5 @@
 #include "../inc/core.hpp"
 
-
 // TODO : add automatic time logging
 // TODO : allow outputting to log file instead
 
@@ -9,20 +8,20 @@ void print_msg( const char *type, const char *msg, const char *src_fct, const ch
 void ERROR( const char *msg, const char *src_fct )
 {
 	if ( LOG_LVL >= ERROR_LVL )
-		print_msg( "ERROR"  , msg, src_fct, C_RED );
+		print_msg( "ERROR", msg, src_fct, C_RED );
 }
 void WARN ( const char *msg, const char *src_fct )
 {
 	if ( LOG_LVL >= WARN_LVL )
-		print_msg( "WARNING", msg, src_fct, C_YEL );
+		print_msg( "WARN ", msg, src_fct, C_YEL );
 }
 void INFO ( const char *msg, const char *src_fct )
 {
 	if ( LOG_LVL >= INFO_LVL )
-		print_msg( "INFO"   , msg, src_fct, C_CYN );
+		print_msg( "INFO ", msg, src_fct, C_CYN );
 }
 void DEBUG( const char *msg, const char *src_fct )
 {
 	if ( LOG_LVL >= DEBUG_LVL )
-		print_msg( "DEBUG"  , msg, src_fct, C_GRN );
+		print_msg( "DEBUG", msg, src_fct, C_GRN );
 }

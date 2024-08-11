@@ -63,7 +63,7 @@ void linkTiles( tile_t *tile1, tile_t *tile2 )
 	{
 		sstream ss;
 		ss << "Tiles [ " << tile1->pos[ IX ] << ":" << tile1->pos[ IY ] << " ] and [ " << tile2->pos[ IX ] << ":" << tile2->pos[ IY ] << " ] are not neighbors";
-		//WARN( ss.str().c_str() , "linkTiles" );
+		//WARN( ss.c_str() , "linkTiles" );
 		return;
 	}
 

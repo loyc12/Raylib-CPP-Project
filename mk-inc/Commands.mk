@@ -1,6 +1,16 @@
 
 .PHONY += compile run re rerun clear clean fclear fclean
 
+# Define a recursive wildcard function
+rwildcard=$(foreach d,$(wildcard $1*),$(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
+
+# Define all object files from source files
+SRCS = $(call rwildcard, $(SRC_DIR)/, *.cpp)
+OBJS = $(SRCS:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
+
+# Define all the subdirectories that object files will be placed in
+OBJ_SUB_DIRS = $(sort $(dir $(OBJS)))
+
 # Default target entry
 # NOTE: We call this Makefile target or Makefile.Android target
 compile: $(PROJECT_NAME)
@@ -17,7 +27,10 @@ $(PROJECT_NAME): $(OBJS)
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(OBJ_DIR)
 	@mkdir -p $(OBJ_SUB_DIRS)
-	@$(CC) -c $< -o $@ $(CFLAGS) $(INCLUDE_PATHS) -D$(PLATFORM)
+	@$(CC) -c $< -o $@ $(CFLAGS) $(INCLUDE_PATHS) -D$(PLATFORM) -MMD -MP
+
+# Include dependency files, so that they are recompiled if headers change
+-include $(OBJS:.o=.d)
 
 run: compile
 	@printf "Launching $(PROJECT_NAME)...\n"
