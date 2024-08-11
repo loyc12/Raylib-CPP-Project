@@ -1,183 +1,15 @@
 #include "../../inc/Tilemap.hpp"
 
-void printTile( tile_t *tile )
+
+Tilemap::Tilemap( uint _size, grid_type_t _gridType ): size( _size ), tileScale( NEW_TILE_SCALE ), maxTileID( 0 ), gridType( _gridType )
 {
-	switch ( tile->type )
-	{
-		case TILE_EMPTY:
-			cout << "  ";
-			break;
-		case TILE_GRASS:
-			cout << "//";
-			break;
-		case TILE_SAND:
-			cout << "~~";
-			break;
-		case TILE_WATER:
-			cout << "::";
-			break;
-		case TILE_ROCK:
-			cout << "XX";
-			break;
-	}
-}
+	this->offset = iar2D{ 0, 0 }; // TODO : center it ( via map dimensions )
 
-void printFullTile( tile_t *tile )
-{
-	cout << "Tile #" << tile->id << " at [ " << tile->pos[ IX ] << ":" << tile->pos[ IY ] << " ]" << endl;
-
-	if ( tile->nbrs[ NO ] != nullptr )
-		cout << "no : Tile #" << tile->nbrs[ NO ]->id << " at [ " << tile->nbrs[ NO ]->pos[ IX ] << ":" << tile->nbrs[ NO ]->pos[ IY ] << " ]" << endl;
-	if ( tile->nbrs[ NE ] != nullptr )
-		cout << "ne : Tile #" << tile->nbrs[ NE ]->id << " at [ " << tile->nbrs[ NE ]->pos[ IX ] << ":" << tile->nbrs[ NE ]->pos[ IY ] << " ]" << endl;
-	if ( tile->nbrs[ EA ] != nullptr )
-		cout << "ea : Tile #" << tile->nbrs[ EA ]->id << " at [ " << tile->nbrs[ EA ]->pos[ IX ] << ":" << tile->nbrs[ EA ]->pos[ IY ] << " ]" << endl;
-	if ( tile->nbrs[ SE ] != nullptr )
-		cout << "se : Tile #" << tile->nbrs[ SE ]->id << " at [ " << tile->nbrs[ SE ]->pos[ IX ] << ":" << tile->nbrs[ SE ]->pos[ IY ] << " ]" << endl;
-	if ( tile->nbrs[ SO ] != nullptr )
-		cout << "so : Tile #" << tile->nbrs[ SO ]->id << " at [ " << tile->nbrs[ SO ]->pos[ IX ] << ":" << tile->nbrs[ SO ]->pos[ IY ] << " ]" << endl;
-	if ( tile->nbrs[ SW ] != nullptr )
-		cout << "sw : Tile #" << tile->nbrs[ SW ]->id << " at [ " << tile->nbrs[ SW ]->pos[ IX ] << ":" << tile->nbrs[ SW ]->pos[ IY ] << " ]" << endl;
-	if ( tile->nbrs[ WE ] != nullptr )
-		cout << "we : Tile #" << tile->nbrs[ WE ]->id << " at [ " << tile->nbrs[ WE ]->pos[ IX ] << ":" << tile->nbrs[ WE ]->pos[ IY ] << " ]" << endl;
-	if ( tile->nbrs[ NW ] != nullptr )
-		cout << "nw : Tile #" << tile->nbrs[ NW ]->id << " at [ " << tile->nbrs[ NW ]->pos[ IX ] << ":" << tile->nbrs[ NW ]->pos[ IY ] << " ]" << endl;
-
-	cout << endl;
-}
-
-bool areTilesNeighbors( tile_t *tile1, tile_t *tile2 )
-{
-	if ( tile1->pos[ IX ] == tile2->pos[ IX ] && tile1->pos[ IY ] == tile2->pos[ IY ] )
-		return false;
-	if ( dif( tile1->pos[ IX ], tile2->pos[ IX ] ) > 1 )
-		return false;
-	if ( dif( tile1->pos[ IY ], tile2->pos[ IY ] ) > 1 )
-		return false;
-	return true;
-}
-
-void linkTiles( tile_t *tile1, tile_t *tile2 )
-{
-	if ( !areTilesNeighbors( tile1, tile2 ))
-	{
-		sstream ss;
-		ss << "Tiles [ " << tile1->pos[ IX ] << ":" << tile1->pos[ IY ] << " ] and [ " << tile2->pos[ IX ] << ":" << tile2->pos[ IY ] << " ] are not neighbors";
-		//WARN( ss.c_str() , "linkTiles" );
-		return;
-	}
-
-	if ( tile1->pos[ IX ] > tile2->pos[ IX ])
-	{
-		if ( tile1->pos[ IY ] > tile2->pos[ IY ])
-		{
-			tile1->nbrs[ NW ] = tile2;
-			tile2->nbrs[ SE ] = tile1;
-		}
-		else if ( tile1->pos[ IY ] < tile2->pos[ IY ])
-		{
-			tile1->nbrs[ SW ] = tile2;
-			tile2->nbrs[ NE ] = tile1;
-		}
-		else
-		{
-			tile1->nbrs[ WE ] = tile2;
-			tile2->nbrs[ EA ] = tile1;
-		}
-	}
-	else if ( tile1->pos[ IX ] < tile2->pos[ IX ])
-	{
-		if ( tile1->pos[ IY ] > tile2->pos[ IY ])
-		{
-			tile1->nbrs[ NE ] = tile2;
-			tile2->nbrs[ SW ] = tile1;
-		}
-		else if ( tile1->pos[ IY ] < tile2->pos[ IY ])
-		{
-			tile1->nbrs[ SE ] = tile2;
-			tile2->nbrs[ NW ] = tile1;
-		}
-		else
-		{
-			tile1->nbrs[ EA ] = tile2;
-			tile2->nbrs[ WE ] = tile1;
-		}
-	}
-	else // tile1->pos[ IX ] == tile2->pos[ IX ]
-	{
-		if ( tile1->pos[ IY ] > tile2->pos[ IY ])
-		{
-			tile1->nbrs[ NO ] = tile2;
-			tile2->nbrs[ SO ] = tile1;
-		}
-		else if ( tile1->pos[ IY ] < tile2->pos[ IY ])
-		{
-			tile1->nbrs[ SO ] = tile2;
-			tile2->nbrs[ NO ] = tile1;
-		}
-		else
-			WARN( "How did you get here ?!?", "linkTiles" );
-	}
-}
-
-void linkToNeighbors( tile_t *tile, tile_map_t *map )
-{
-	uint x = tile->pos[ IX ];
-	uint y = tile->pos[ IY ];
-
-	if ( tile->nbrs[ WE ] == nullptr && x > 0 )
-		linkTiles( tile, &( *map )[ y + 0 ][ x - 1 ]);
-
-	if ( tile->nbrs[ NW ] == nullptr && x > 0 && y > 0 )
-		linkTiles( tile, &( *map )[ y - 1 ][ x - 1 ]);
-
-	if ( tile->nbrs[ NO ] == nullptr && y > 0 )
-		linkTiles( tile, &( *map )[ y - 1 ][ x + 0 ]);
-
-	if ( tile->nbrs[ NE ] == nullptr && x < map->size() - 1 && y > 0 )		// NOTE : skip this step in HEX grids (?)
-		linkTiles( tile, &( *map )[ y - 1 ][ x + 1 ]);
-
-}
-
-tile_type_t randomTileType()
-{
-	tile_type_t tileType = TILE_EMPTY;
-
-	byte r = rand() % 4;
-	switch ( r )
-	{
-		case 0:
-			tileType = TILE_GRASS;
-			break;
-		case 1:
-			tileType = TILE_SAND;
-			break;
-		case 2:
-			tileType = TILE_WATER;
-			break;
-		case 3:
-			tileType = TILE_ROCK;
-			break;
-	}
-	// TODO : change tileType based on neighbours here
-
-	return tileType;
-}
-
-
-/* ================ Tilemap Class ================ */
-
-
-Tilemap::Tilemap( uint _size, grid_type_t _gridType )
-{
-	this->size = _size;
-	this->maxTileID = 0;
-	this->offset = uiar2D{ 0, 0 }; // TODO : center it ( via map dimensions )
-	this->gridType = _gridType;
 	this->map = tile_map_t( this->size, tile_row_t( this->size ));
 
 	this->initMap();
 }
+
 
 void Tilemap::initMap()
 {
@@ -208,6 +40,9 @@ void Tilemap::clearMap()
 	this->map.clear();
 }
 
+/* ==================== Terrain Generation ==================== */
+
+
 void Tilemap::populateMap()
 {
 	for ( uint y = 0; y < this->size; y++ )
@@ -223,6 +58,30 @@ void Tilemap::populateMap()
 	}
 }
 
+/* ==================== Drawing ==================== */
+
+void Tilemap::drawMap()
+{
+	for ( uint y = 0; y < this->size; y++ )
+	{
+		for ( uint x = 0; x < this->size; x++ )
+		{
+			tile_t *tile = &this->map[ y ][ x ];
+
+			iar2D screenCoords = this->getScreenCoords( tile->pos );
+
+			// skip drawing if tile is offscreen
+			if ( screenCoords[ IX ] <= -(int)this->tileScale || screenCoords[ IX ] > GetScreenWidth() ||
+					 screenCoords[ IY ] <= -(int)this->tileScale || screenCoords[ IY ] > GetScreenHeight())
+				continue;
+
+			drawTile( tile, this->tileScale, this->getScreenCoords( tile->pos ), this->gridType );
+		}
+	}
+}
+
+/* ==================== Accessors ==================== */
+
 tile_t *Tilemap::getTile( uint x, uint y ) { return &this->map[ y ][ x ]; }
 tile_t *Tilemap::setTile( uint x, uint y, tile_type_t _tileType )
 {
@@ -230,9 +89,24 @@ tile_t *Tilemap::setTile( uint x, uint y, tile_type_t _tileType )
 	return &this->map[ y ][ x ];
 }
 
-void Tilemap::setOffset( uint x, uint y ) { this->offset = uiar2D{ x, y }; }
-void Tilemap::setOffset( uiar2D _offset ) { this->offset = _offset; }
-uiar2D Tilemap::getOffset() { return this->offset; }
+uint Tilemap::getZoom() { return this->tileScale; }
+void Tilemap::setZoom( uint _tileScale )
+{
+	if ( _tileScale < MIN_TILE_SCALE )
+		this->tileScale = MIN_TILE_SCALE;
+	else if ( _tileScale > MAX_TILE_SCALE )
+		this->tileScale = MAX_TILE_SCALE;
+	else
+		this->tileScale = _tileScale;
+}
+
+iar2D Tilemap::getOffset() { return this->offset; }
+void Tilemap::setOffset( iar2D _offset ) { this->offset = _offset; }
+void Tilemap::panMap( iar2D panDir )
+{
+	this->offset[ IX ] += panDir[ IX ];
+	this->offset[ IY ] += panDir[ IY ];
+}
 
 void Tilemap::iterOnTiles( void ( *f )( tile_t* ))
 {
@@ -242,6 +116,62 @@ void Tilemap::iterOnTiles( void ( *f )( tile_t* ))
 			f( &map[ y ][ x ] );
 	}
 }
+
+iar2D Tilemap::getScreenCoords( uiar2D tileCoords )
+{
+	uint x = tileCoords[ IX ];
+	uint y = tileCoords[ IY ];
+
+	int screenX = 0;
+	int screenY = 0;
+
+	switch ( this->gridType )
+	{
+		case GRID_SQR:
+			screenX = x * this->tileScale;
+			screenY = y * this->tileScale;
+			break;
+
+		case GRID_ISO:
+			screenX = ( x - y ) * this->tileScale / 2;
+			screenY = ( x + y ) * this->tileScale / 2;
+			break;
+
+		default:
+			ERROR( "Unimplemented grid type", "getScreenCoords" );
+			break;
+	}
+	return iar2D{ screenX + this->offset[ IX ], screenY + this->offset[ IY ] };
+}
+
+uiar2D Tilemap::getTileCoords( uiar2D screenCoords )
+{
+	uint x = screenCoords[ IX ];
+	uint y = screenCoords[ IY ];
+
+	uint tileX = 0;
+	uint tileY = 0;
+
+	switch ( this->gridType )
+	{
+		case GRID_SQR:
+			tileX = x / this->tileScale;
+			tileY = y / this->tileScale;
+			break;
+		case GRID_ISO:
+		{
+			tileX = (( 2 * y ) + x ) / this->tileScale; // TODO : is this broken ???
+			tileY = (( 2 * y ) - x ) / this->tileScale;
+			break;
+		}
+		default:
+			ERROR( "Unimplemented grid type", "getTileCoords" );
+			break;
+	}
+	return uiar2D{ tileX, tileY };
+}
+
+/* ==================== Printing ==================== */
 
 void Tilemap::printTileAt( uint x, uint y ) { printTile( &this->map[ y ][ x ] ); }
 void Tilemap::printMap()

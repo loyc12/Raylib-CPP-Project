@@ -3,7 +3,7 @@
 #include "core.hpp"
 #include "Tilemap.hpp"
 
-#define BKGRND_COLOR	CLITERAL( Color ) {63, 63, 63, 255 }
+#define BKGRND_COLOR	CLITERAL( Color ) { 63, 63, 63, 255 }
 
 typedef enum e_game_state
 {
@@ -45,6 +45,8 @@ class Engine
 		void togglePause();
 		void pauseStep();
 		void resumeStep();
+
+		void panMap( iar2D panDir );
 
 	public:
 		Engine( const str _gameTitle, uint _screenWidth, uint _screenHeight, uint _targetFPS );

@@ -1,46 +1,5 @@
 #include "../../inc/Engine.hpp"
-#include <raylib.h>
 
-void Engine::inputsStep()
-{
-	DEBUG( "Here", "inputsStep" );
-	this->deltaTime = GetFrameTime();
-
-	if ( IsKeyPressed( KEY_P ) )
-		this->togglePause();
-	if ( IsKeyPressed( KEY_ESCAPE ) )
-		this->gameState = GAME_STOP;
-
-}
-
-void Engine::scriptsStep()
-{
-	DEBUG( "Here", "scriptsStep" );
-
-}
-
-void Engine::physicsStep()
-{
-	DEBUG( "Here", "physicsStep" );
-
-}
-
-void Engine::graphicsStep()
-{
-	DEBUG( "Here", "graphicsStep" );
-
-}
-
-void Engine::drawingStep()
-{
-	DEBUG( "Here", "drawingStep" );
-	BeginDrawing();
-	ClearBackground( BKGRND_COLOR );
-
-	//this->tilemap->drawMap();
-
-	EndDrawing();
-}
 
 Engine::Engine( const str _gameTitle, uint _screenWidth, uint _screenHeight, uint _targetFPS ) :
 	gameTitle( _gameTitle ), screenWidth( _screenWidth ), screenHeight( _screenHeight ), targetFPS( _targetFPS ),
@@ -58,7 +17,7 @@ void Engine::initStep()
 	InitWindow( this->screenWidth, this->screenHeight, this->gameTitle.c_str() );
 	SetTargetFPS( targetFPS );
 
-	this->tilemap = new Tilemap( NEW_MAP_SIZE, GRID_SQR );
+	this->tilemap = new Tilemap( NEW_MAP_SIZE, DEF_GRID_TYPE );
 	this->tilemap->populateMap();
 
 	this->gameState = GAME_RUN;
@@ -153,4 +112,17 @@ void Engine::runGame()
 				return;
 		}
 	}
+}
+
+void Engine::panMap( iar2D panDir )
+{
+	INFO( "Paning...", "panMap" );
+
+	if ( this->gameState != GAME_RUN )
+	{
+		WARN( "Cannot pan map from current game state", "panMap" );
+		return;
+	}
+
+	this->tilemap->panMap( panDir );
 }
