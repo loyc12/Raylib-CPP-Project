@@ -1,6 +1,7 @@
 #pragma once
 
 #include "deps.hpp"
+#include <sys/types.h>
 
 typedef enum e_tile_type
 {
@@ -13,24 +14,27 @@ typedef enum e_tile_type
 
 typedef enum e_grid_type
 {
-	PRO_DEF,
-	PRO_ISO,
-	PRO_HEX_HOR,
-	PRO_HEX_VER
+	GRID_DEF,
+	GRID_ISO,
+	GRID_HEX_X,
+	GRID_HEX_Y
 }				t_grid_type;
-
 
 typedef struct s_tile
 {
-	int id;
-	int mapX;
-	int mapY;
-	t_tile_type		type;
+	uint	id;
+	arr2	pos;
+	bool	isPopulated;
 
-	struct s_tile	*north;
-	struct s_tile	*west;
-	struct s_tile	*south;
-	struct s_tile	*east;
+	t_tile_type		type;
+	struct s_tile	*no;
+	struct s_tile	*ne;
+	struct s_tile	*ea;
+	struct s_tile	*se;
+	struct s_tile	*so;
+	struct s_tile	*sw;
+	struct s_tile	*we;
+	struct s_tile	*nw;
 
 }				t_tile;
 
@@ -38,32 +42,39 @@ typedef struct s_tile
 #define t_tile_row vector<t_tile>
 
 void printTile( t_tile *tile );
+void printFullTile( t_tile *tile );
+bool areTilesNeighbors( t_tile *tile1, t_tile *tile2 );
+void linkTiles( t_tile *tile1, t_tile *tile2 );
+t_tile_type randomTileType();
 
 class Tilemap
 {
 	private:
-		int					size;
+		uint				size;
+		uint				maxTileID;
 		arr2				offset;
 		t_grid_type	gridType;
 		t_tile_map	map;
 
 		Tilemap();
-		void generateMap();
+		void initMap();
 		void clearMap();
 
 	public:
-		Tilemap( int size, t_grid_type _gridType );
+		Tilemap( uint size, t_grid_type _gridType );
 		~Tilemap();
 
-		void printTileAt( int x, int y );
-		void printMap();
+		void populateMap();
 
-		t_tile *getTile( int x, int y );
-		t_tile *setTile( int x, int y, t_tile_type _tileType );
+		//t_tile *getTileFromID( uint id );
+		t_tile *getTile( uint x, uint y );
+		t_tile *setTile( uint x, uint y, t_tile_type _tileType );
 
-		void setOffset( int x, int y );
+		void setOffset( uint x, uint y );
 		void setOffset( arr2 offset );
 		arr2 getOffset();
 
 		void iterOnTiles( void (*f)( t_tile* ));
+		void printTileAt( uint x, uint y );
+		void printMap();
 };

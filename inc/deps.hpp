@@ -6,12 +6,15 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <sstream>
+
+using std::endl;
+using std::string;
+typedef std::stringstream sstream;
 
 using std::cin;
 using std::cout;
 using std::cerr;
-using std::endl;
-using std::string;
 
 using std::iostream;
 using std::istream;
@@ -38,6 +41,8 @@ using std::vector;
 #define IW 3
 
 /* ==== math ==== */
+
+typedef unsigned char byte;
 
 using std::min;
 using std::max;

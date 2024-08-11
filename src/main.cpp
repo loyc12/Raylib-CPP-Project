@@ -1,5 +1,7 @@
 #include "../inc/deps.hpp"
 #include "../inc/ball.hpp"
+#include "../inc/Tilemap.hpp"
+#include <iostream>
 
 //===========================================================//
 //                           STEPS                           //
@@ -79,6 +81,16 @@ void gameLoop( Ball *ball )
 	}
 }
 
+void testTilemap()
+{
+	cout << "testing Tilemap" << endl << endl;
+
+	Tilemap map( 20, GRID_DEF );
+	map.populateMap();
+	map.printMap();
+	printFullTile( map.getTile( 7, 7 ) );
+}
+
 int main()
 {
 	Ball ball;
@@ -88,4 +100,6 @@ int main()
 		gameLoop( &ball );
 	}
 	closeStep();
+
+	testTilemap();
 }
