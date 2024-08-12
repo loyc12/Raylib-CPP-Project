@@ -5,19 +5,22 @@ tile_type_t randomTileType()
 {
 	tile_type_t tileType = TILE_EMPTY;
 
-	byte r = rand() % 4;
+	byte r = rand() % 5;
 	switch ( r )
 	{
 		case 0:
 			tileType = TILE_GRASS;
 			break;
 		case 1:
-			tileType = TILE_SAND;
+			tileType = TILE_DIRT;
 			break;
 		case 2:
-			tileType = TILE_WATER;
+			tileType = TILE_SAND;
 			break;
 		case 3:
+			tileType = TILE_WATER;
+			break;
+		case 4:
 			tileType = TILE_ROCK;
 			break;
 	}
@@ -36,6 +39,9 @@ void printTile( tile_t *tile )
 			break;
 		case TILE_GRASS:
 			cout << "//";
+			break;
+		case TILE_DIRT:
+			cout << "[]";
 			break;
 		case TILE_SAND:
 			cout << "~~";
@@ -168,6 +174,7 @@ void linkToNeighbors( tile_t *tile, tile_map_t *map )
 		linkTiles( tile, &( *map )[ y - 1 ][ x + 1 ]);
 }
 
+// OBSOLETE
 void drawTile( tile_t *tile, uint tileScale, iar2D screenCoords, grid_type_t gridType )
 {
 	uint tileWidth  = tileScale; // TODO : make this more customizable
@@ -175,7 +182,7 @@ void drawTile( tile_t *tile, uint tileScale, iar2D screenCoords, grid_type_t gri
 
 	(void)gridType; // TODO : implement gridType differences
 
-/*
+
 	switch ( gridType )
 	{
 		case GRID_SQR:
@@ -187,7 +194,7 @@ void drawTile( tile_t *tile, uint tileScale, iar2D screenCoords, grid_type_t gri
 			ERROR( "Unimplemented grid type", "drawTile" );
 			return;
 	}
-*/
+
 
 	switch ( tile->type )
 	{
@@ -198,6 +205,9 @@ void drawTile( tile_t *tile, uint tileScale, iar2D screenCoords, grid_type_t gri
 			break;
 		case TILE_SAND:
 			DrawRectangle( screenCoords[ IX ], screenCoords[ IY ], tileWidth, tileHeight, YELLOW );
+			break;
+		case TILE_DIRT:
+			DrawRectangle( screenCoords[ IX ], screenCoords[ IY ], tileWidth, tileHeight, BROWN );
 			break;
 		case TILE_WATER:
 			DrawRectangle( screenCoords[ IX ], screenCoords[ IY ], tileWidth, tileHeight, BLUE );

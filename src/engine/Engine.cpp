@@ -42,7 +42,7 @@ void Engine::resumeStep()
 
 void Engine::panMap( iar2D panDir )
 {
-	INFO( "Paning...", "panMap" );
+	DEBUG( "Paning...", "panMap" );
 
 	if ( this->gameState != GAME_RUN )
 	{

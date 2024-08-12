@@ -21,32 +21,37 @@ typedef enum e_game_state
 class Engine
 {
 	private:
-		str			gameTitle;
-		uint		screenWidth;
-		uint		screenHeight;
-		uint		targetFPS;
-		bool		isRunning;
-		double	deltaTime;
-		Tilemap *tilemap;
+		str		gameTitle;
+		uint	screenWidth;
+		uint	screenHeight;
+		uint	targetFPS;
+		bool	isRunning;
 
+		double		deltaTime;
+		Tilemap 	*tilemap;
+
+		Texture2D 		tileAtlas;
 		t_game_state	gameState;
 
 		Engine() = delete;
 
 		void inputsStep();
+		void togglePause();
+		void panMap( iar2D panDir );
+
 		void scriptsStep();
+
 		void physicsStep();
+
 		void graphicsStep();
 		void drawingStep();
+		void loadImages();
+		void drawTile( tile_type_t tileType, iar2D screenPos );
 
 		void initStep();
-		void closeStep();
-
-		void togglePause();
 		void pauseStep();
 		void resumeStep();
-
-		void panMap( iar2D panDir );
+		void closeStep();
 
 	public:
 		Engine( const str _gameTitle, uint _screenWidth, uint _screenHeight, uint _targetFPS );

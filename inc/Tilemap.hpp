@@ -1,7 +1,6 @@
 #pragma once
 
 #include "core.hpp"
-#include <sys/types.h>
 
 
 typedef enum tile_type_e
@@ -9,6 +8,7 @@ typedef enum tile_type_e
 	TILE_EMPTY,
 	TILE_GRASS,
 	TILE_SAND,
+	TILE_DIRT,
 	TILE_WATER,
 	TILE_ROCK
 }				tile_type_t;
@@ -26,7 +26,6 @@ typedef enum grid_type_e
 typedef enum grid_dir_e { NO, NE, EA, SE, SO, SW, WE, NW } grid_dir_t;
 
 /* ================= Tile Struct ================= */
-
 
 typedef struct tile_s
 {
@@ -50,12 +49,14 @@ bool areTilesNeighbors( tile_t *tile1, tile_t *tile2 );
 void linkTiles( tile_t *tile1, tile_t *tile2 );
 void linkToNeighbors( tile_t *tile, tile_map_t *map );
 
+// OBSOLETE
 void drawTile( tile_t *tile, uint tileScale, iar2D screenCoords, grid_type_t gridType );
 
 
 /* ================ Tilemap Class ================ */
 
 
+#define MAP_ZOOM_SPEED 4
 #define MAP_PAN_SPEED 3
 #define NEW_MAP_SIZE 16
 #define NEW_TILE_SCALE 64
@@ -82,6 +83,8 @@ class Tilemap
 		~Tilemap();
 
 		void populateMap();
+
+		// OBSOLETE
 		void drawMap();
 
 		iar2D	getScreenCoords( uiar2D tileCoords );
@@ -91,8 +94,10 @@ class Tilemap
 		tile_t *getTile( uint x, uint y );
 		tile_t *setTile( uint x, uint y, tile_type_t _tileType );
 
+		uint getSize();
 		uint getZoom();
 		void setZoom( uint _tileScale );
+		void zoomMap( int delta );
 
 		iar2D	getOffset();
 		void	setOffset( iar2D offset );

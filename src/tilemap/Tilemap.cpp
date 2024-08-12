@@ -60,6 +60,7 @@ void Tilemap::populateMap()
 
 /* ====================== Drawing ===================== */
 
+// OBSOLETE
 void Tilemap::drawMap()
 {
 	for ( uint y = 0; y < this->size; y++ )
@@ -114,6 +115,7 @@ tile_t *Tilemap::getTileAt( uiar2D screenCoords )
 	uint screenX = screenCoords[ IX ] - this->offset[ IX ];
 	uint screenY = screenCoords[ IY ] - this->offset[ IY ];
 
+	uint halfTile = this->tileScale / 2;
 	uint tileX = 0;
 	uint tileY = 0;
 
@@ -125,15 +127,14 @@ tile_t *Tilemap::getTileAt( uiar2D screenCoords )
 			break;
 
 		case GRID_ISO:
-			tileX = ( screenY + ( screenX / 2 )) / ( this->tileScale ); // NOTE : DON'T CHANGE THIS
-			tileY = ( screenY - ( screenX / 2 )) / ( this->tileScale ); // I HAD TO MATH IT OUT !!!
+			tileX = (( 2 * screenY ) + ( screenX - halfTile )) / ( 2 * this->tileScale ); // NOTE : DON'T CHANGE THIS
+			tileY = (( 2 * screenY ) - ( screenX - halfTile )) / ( 2 * this->tileScale ); // I HAD TO MATH IT OUT !!!
 			break;
 
 		default:
 			ERROR( "Unimplemented grid type", "getTileAt" );
 			return nullptr;
 	}
-
 	return this->getTile( tileX, tileY );
 }
 
@@ -151,6 +152,7 @@ tile_t *Tilemap::setTile( uint x, uint y, tile_type_t _tileType )
 	return &this->map[ y ][ x ];
 }
 
+uint Tilemap::getSize() { return this->size; }
 uint Tilemap::getZoom() { return this->tileScale; }
 void Tilemap::setZoom( uint _tileScale )
 {
@@ -161,6 +163,7 @@ void Tilemap::setZoom( uint _tileScale )
 	else
 		this->tileScale = _tileScale;
 }
+void Tilemap::zoomMap( int delta ) { this->setZoom( this->tileScale + delta ); }
 
 iar2D Tilemap::getOffset() { return this->offset; }
 void Tilemap::setOffset( iar2D _offset ) { this->offset = _offset; }

@@ -3,6 +3,7 @@
 #include <raylib.h>
 
 #include "messaging.hpp"
+#include "graphics.hpp"
 #include "maths.hpp"
 
 /* ==== containers ==== */

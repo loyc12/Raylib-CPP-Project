@@ -29,6 +29,7 @@ void Engine::inputsStep()
 		}
 		if ( panDir[ IX ] != 0 || panDir[ IY ] != 0 )
 			this->panMap( panDir );
+
 	}
 
 	// mouse stuff
@@ -47,6 +48,12 @@ void Engine::inputsStep()
 		{
 			DEBUG( "Mouse right button pressed", "inputsStep" );
 		}
+
+		// zoom with mouse wheel
+		if ( GetMouseWheelMove() > 0 )
+			this->tilemap->zoomMap( MAP_ZOOM_SPEED );
+		if ( GetMouseWheelMove() < 0 )
+			this->tilemap->zoomMap( -MAP_ZOOM_SPEED );
 	}
 
 
