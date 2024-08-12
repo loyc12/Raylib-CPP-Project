@@ -40,7 +40,7 @@ void Tilemap::clearMap()
 	this->map.clear();
 }
 
-/* ==================== Terrain Generation ==================== */
+/* ================ Terrain Generation ================ */
 
 
 void Tilemap::populateMap()
@@ -58,7 +58,7 @@ void Tilemap::populateMap()
 	}
 }
 
-/* ==================== Drawing ==================== */
+/* ====================== Drawing ===================== */
 
 void Tilemap::drawMap()
 {
@@ -80,42 +80,7 @@ void Tilemap::drawMap()
 	}
 }
 
-/* ==================== Accessors ==================== */
-
-tile_t *Tilemap::getTile( uint x, uint y ) { return &this->map[ y ][ x ]; }
-tile_t *Tilemap::setTile( uint x, uint y, tile_type_t _tileType )
-{
-	this->map[ y ][ x ].type = _tileType;
-	return &this->map[ y ][ x ];
-}
-
-uint Tilemap::getZoom() { return this->tileScale; }
-void Tilemap::setZoom( uint _tileScale )
-{
-	if ( _tileScale < MIN_TILE_SCALE )
-		this->tileScale = MIN_TILE_SCALE;
-	else if ( _tileScale > MAX_TILE_SCALE )
-		this->tileScale = MAX_TILE_SCALE;
-	else
-		this->tileScale = _tileScale;
-}
-
-iar2D Tilemap::getOffset() { return this->offset; }
-void Tilemap::setOffset( iar2D _offset ) { this->offset = _offset; }
-void Tilemap::panMap( iar2D panDir )
-{
-	this->offset[ IX ] += panDir[ IX ];
-	this->offset[ IY ] += panDir[ IY ];
-}
-
-void Tilemap::iterOnTiles( void ( *f )( tile_t* ))
-{
-	for ( uint y = 0; y < this->size; y++ )
-	{
-		for ( uint x = 0; x < this->size; x++ )
-			f( &map[ y ][ x ] );
-	}
-}
+/* ===================== Accessors ==================== */
 
 iar2D Tilemap::getScreenCoords( uiar2D tileCoords )
 {
@@ -144,10 +109,10 @@ iar2D Tilemap::getScreenCoords( uiar2D tileCoords )
 	return iar2D{ screenX + this->offset[ IX ], screenY + this->offset[ IY ] };
 }
 
-uiar2D Tilemap::getTileCoords( uiar2D screenCoords )
+tile_t *Tilemap::getTileAt( uiar2D screenCoords )
 {
-	uint x = screenCoords[ IX ];
-	uint y = screenCoords[ IY ];
+	uint screenX = screenCoords[ IX ] - this->offset[ IX ];
+	uint screenY = screenCoords[ IY ] - this->offset[ IY ];
 
 	uint tileX = 0;
 	uint tileY = 0;
@@ -155,25 +120,82 @@ uiar2D Tilemap::getTileCoords( uiar2D screenCoords )
 	switch ( this->gridType )
 	{
 		case GRID_SQR:
-			tileX = x / this->tileScale;
-			tileY = y / this->tileScale;
+			tileX = screenX / this->tileScale;
+			tileY = screenY / this->tileScale;
 			break;
+
 		case GRID_ISO:
-		{
-			tileX = ( y + x ) / this->tileScale; // TODO : is this broken ???
-			tileY = (( 2 * y ) - x ) / this->tileScale;
+			tileX = ( screenY + ( screenX / 2 )) / ( this->tileScale ); // NOTE : DON'T CHANGE THIS
+			tileY = ( screenY - ( screenX / 2 )) / ( this->tileScale ); // I HAD TO MATH IT OUT !!!
 			break;
-		}
+
 		default:
-			ERROR( "Unimplemented grid type", "getTileCoords" );
-			break;
+			ERROR( "Unimplemented grid type", "getTileAt" );
+			return nullptr;
 	}
-	return uiar2D{ tileX, tileY };
+
+	return this->getTile( tileX, tileY );
 }
 
-/* ==================== Printing ==================== */
+tile_t *Tilemap::getTile( uint x, uint y )
+{
+	if ( !this->isTileValid( x, y ))
+		return nullptr;
+	return &this->map[ y ][ x ];
+}
+tile_t *Tilemap::setTile( uint x, uint y, tile_type_t _tileType )
+{
+	if ( !this->isTileValid( x, y ))
+		return nullptr;
+	this->map[ y ][ x ].type = _tileType;
+	return &this->map[ y ][ x ];
+}
 
-void Tilemap::printTileAt( uint x, uint y ) { printTile( &this->map[ y ][ x ] ); }
+uint Tilemap::getZoom() { return this->tileScale; }
+void Tilemap::setZoom( uint _tileScale )
+{
+	if ( _tileScale < MIN_TILE_SCALE )
+		this->tileScale = MIN_TILE_SCALE;
+	else if ( _tileScale > MAX_TILE_SCALE )
+		this->tileScale = MAX_TILE_SCALE;
+	else
+		this->tileScale = _tileScale;
+}
+
+iar2D Tilemap::getOffset() { return this->offset; }
+void Tilemap::setOffset( iar2D _offset ) { this->offset = _offset; }
+void Tilemap::modOffset( iar2D delta )
+{
+	this->offset[ IX ] += delta[ IX ];
+	this->offset[ IY ] += delta[ IY ];
+}
+
+void Tilemap::iterOnTiles( void ( *f )( tile_t* ))
+{
+	for ( uint y = 0; y < this->size; y++ )
+	{
+		for ( uint x = 0; x < this->size; x++ )
+			f( &map[ y ][ x ] );
+	}
+}
+
+bool Tilemap::isTileValid( uint x, uint y )
+{
+	if ( x >= this->size || y >= this->size )
+	{
+		INFO( "Tile is out of bounds", "isTileValid" );
+		return false;
+	}
+	return true;
+}
+
+/* ================== Debug Printing ================== */
+
+void Tilemap::printTileAt( uint x, uint y )
+{
+	if ( this->isTileValid( x, y ))
+	printTile( &this->map[ y ][ x ] );
+}
 void Tilemap::printMap()
 {
 	cout << "Tilemap : " << this->size << "x" << this->size << endl << endl;

@@ -52,23 +52,26 @@ void printTile( tile_t *tile )
 void printFullTile( tile_t *tile )
 {
 	cout << "Tile #" << tile->id << " at [ " << tile->pos[ IX ] << ":" << tile->pos[ IY ] << " ]" << endl;
+	cout << "Type : ";
+	printTile( tile );
+	cout << endl << "Neighbors :" << endl;
 
 	if ( tile->nbrs[ NO ] != nullptr )
-		cout << "no : Tile #" << tile->nbrs[ NO ]->id << " at [ " << tile->nbrs[ NO ]->pos[ IX ] << ":" << tile->nbrs[ NO ]->pos[ IY ] << " ]" << endl;
+		cout << "NO : Tile #" << tile->nbrs[ NO ]->id << " at [ " << tile->nbrs[ NO ]->pos[ IX ] << ":" << tile->nbrs[ NO ]->pos[ IY ] << " ]" << endl;
 	if ( tile->nbrs[ NE ] != nullptr )
-		cout << "ne : Tile #" << tile->nbrs[ NE ]->id << " at [ " << tile->nbrs[ NE ]->pos[ IX ] << ":" << tile->nbrs[ NE ]->pos[ IY ] << " ]" << endl;
+		cout << "NE : Tile #" << tile->nbrs[ NE ]->id << " at [ " << tile->nbrs[ NE ]->pos[ IX ] << ":" << tile->nbrs[ NE ]->pos[ IY ] << " ]" << endl;
 	if ( tile->nbrs[ EA ] != nullptr )
-		cout << "ea : Tile #" << tile->nbrs[ EA ]->id << " at [ " << tile->nbrs[ EA ]->pos[ IX ] << ":" << tile->nbrs[ EA ]->pos[ IY ] << " ]" << endl;
+		cout << "EA : Tile #" << tile->nbrs[ EA ]->id << " at [ " << tile->nbrs[ EA ]->pos[ IX ] << ":" << tile->nbrs[ EA ]->pos[ IY ] << " ]" << endl;
 	if ( tile->nbrs[ SE ] != nullptr )
-		cout << "se : Tile #" << tile->nbrs[ SE ]->id << " at [ " << tile->nbrs[ SE ]->pos[ IX ] << ":" << tile->nbrs[ SE ]->pos[ IY ] << " ]" << endl;
+		cout << "SE : Tile #" << tile->nbrs[ SE ]->id << " at [ " << tile->nbrs[ SE ]->pos[ IX ] << ":" << tile->nbrs[ SE ]->pos[ IY ] << " ]" << endl;
 	if ( tile->nbrs[ SO ] != nullptr )
-		cout << "so : Tile #" << tile->nbrs[ SO ]->id << " at [ " << tile->nbrs[ SO ]->pos[ IX ] << ":" << tile->nbrs[ SO ]->pos[ IY ] << " ]" << endl;
+		cout << "SO : Tile #" << tile->nbrs[ SO ]->id << " at [ " << tile->nbrs[ SO ]->pos[ IX ] << ":" << tile->nbrs[ SO ]->pos[ IY ] << " ]" << endl;
 	if ( tile->nbrs[ SW ] != nullptr )
-		cout << "sw : Tile #" << tile->nbrs[ SW ]->id << " at [ " << tile->nbrs[ SW ]->pos[ IX ] << ":" << tile->nbrs[ SW ]->pos[ IY ] << " ]" << endl;
+		cout << "SW : Tile #" << tile->nbrs[ SW ]->id << " at [ " << tile->nbrs[ SW ]->pos[ IX ] << ":" << tile->nbrs[ SW ]->pos[ IY ] << " ]" << endl;
 	if ( tile->nbrs[ WE ] != nullptr )
-		cout << "we : Tile #" << tile->nbrs[ WE ]->id << " at [ " << tile->nbrs[ WE ]->pos[ IX ] << ":" << tile->nbrs[ WE ]->pos[ IY ] << " ]" << endl;
+		cout << "WE : Tile #" << tile->nbrs[ WE ]->id << " at [ " << tile->nbrs[ WE ]->pos[ IX ] << ":" << tile->nbrs[ WE ]->pos[ IY ] << " ]" << endl;
 	if ( tile->nbrs[ NW ] != nullptr )
-		cout << "nw : Tile #" << tile->nbrs[ NW ]->id << " at [ " << tile->nbrs[ NW ]->pos[ IX ] << ":" << tile->nbrs[ NW ]->pos[ IY ] << " ]" << endl;
+		cout << "NW : Tile #" << tile->nbrs[ NW ]->id << " at [ " << tile->nbrs[ NW ]->pos[ IX ] << ":" << tile->nbrs[ NW ]->pos[ IY ] << " ]" << endl;
 
 	cout << endl;
 }
@@ -170,7 +173,7 @@ void drawTile( tile_t *tile, uint tileScale, iar2D screenCoords, grid_type_t gri
 	uint tileWidth  = tileScale; // TODO : make this more customizable
 	uint tileHeight = tileScale;
 
-	(void)gridType; // TODO : implement gridType
+	(void)gridType; // TODO : implement gridType differences
 
 /*
 	switch ( gridType )

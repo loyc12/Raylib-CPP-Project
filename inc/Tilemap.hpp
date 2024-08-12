@@ -84,20 +84,21 @@ class Tilemap
 		void populateMap();
 		void drawMap();
 
+		iar2D	getScreenCoords( uiar2D tileCoords );
+
 		//tile_t *getTileFromID( uint id );
+		tile_t *getTileAt( uiar2D screenCoords );
 		tile_t *getTile( uint x, uint y );
 		tile_t *setTile( uint x, uint y, tile_type_t _tileType );
 
 		uint getZoom();
 		void setZoom( uint _tileScale );
 
-		iar2D getOffset();
-		void setOffset( iar2D offset );
-		void panMap( iar2D panDir );
+		iar2D	getOffset();
+		void	setOffset( iar2D offset );
+		void	modOffset( iar2D delta );
 
-		iar2D getScreenCoords( uiar2D tileCoords );
-		uiar2D getTileCoords( uiar2D screenCoords );
-
+		bool isTileValid( uint x, uint y );
 		void iterOnTiles( void (*f)( tile_t* ));
 		void printTileAt( uint x, uint y );
 		void printMap();

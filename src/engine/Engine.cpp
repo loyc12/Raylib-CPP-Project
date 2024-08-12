@@ -50,5 +50,5 @@ void Engine::panMap( iar2D panDir )
 		return;
 	}
 
-	this->tilemap->panMap( panDir );
+	this->tilemap->modOffset( panDir );
 }
