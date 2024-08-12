@@ -152,6 +152,7 @@ tile_t *Tilemap::setTile( uint x, uint y, tile_type_t _tileType )
 	return &this->map[ y ][ x ];
 }
 
+grid_type_t Tilemap::getGridType() { return this->gridType; }
 uint Tilemap::getSize() { return this->size; }
 uint Tilemap::getZoom() { return this->tileScale; }
 void Tilemap::setZoom( uint _tileScale )

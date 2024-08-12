@@ -1,6 +1,7 @@
 #pragma once
 
 #include "core.hpp"
+#include <sys/types.h>
 
 
 typedef enum tile_type_e
@@ -56,13 +57,14 @@ void drawTile( tile_t *tile, uint tileScale, iar2D screenCoords, grid_type_t gri
 /* ================ Tilemap Class ================ */
 
 
-#define MAP_ZOOM_SPEED 4
 #define MAP_PAN_SPEED 3
 #define NEW_MAP_SIZE 16
+#define MAP_ZOOM_SPEED 4
 #define NEW_TILE_SCALE 64
-#define MIN_TILE_SCALE 16
+#define MIN_TILE_SCALE 32
 #define MAX_TILE_SCALE 512
 #define DEF_GRID_TYPE GRID_ISO
+#define NO_MAP_TEXTURE false
 
 class Tilemap
 {
@@ -94,7 +96,9 @@ class Tilemap
 		tile_t *getTile( uint x, uint y );
 		tile_t *setTile( uint x, uint y, tile_type_t _tileType );
 
+		grid_type_t getGridType();
 		uint getSize();
+
 		uint getZoom();
 		void setZoom( uint _tileScale );
 		void zoomMap( int delta );

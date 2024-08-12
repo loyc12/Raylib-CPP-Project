@@ -50,12 +50,14 @@ void Engine::inputsStep()
 		}
 
 		// zoom with mouse wheel
-		if ( GetMouseWheelMove() > 0 )
-			this->tilemap->zoomMap( MAP_ZOOM_SPEED );
-		if ( GetMouseWheelMove() < 0 )
-			this->tilemap->zoomMap( -MAP_ZOOM_SPEED );
+		uint zoom = 0;
+		if ( GetMouseWheelMove() > 0 ) { zoom += MAP_ZOOM_SPEED; }
+		if ( GetMouseWheelMove() < 0 ) { zoom -= MAP_ZOOM_SPEED; }
+		if ( IsKeyDown( KEY_LEFT_SHIFT ) || IsKeyDown( KEY_RIGHT_SHIFT ))
+		{
+			zoom *= 3;
+		}
+		if ( zoom != 0 ) { this->tilemap->zoomMap( zoom ); }
 	}
-
-
 
 }

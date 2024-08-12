@@ -180,15 +180,11 @@ void drawTile( tile_t *tile, uint tileScale, iar2D screenCoords, grid_type_t gri
 	uint tileWidth  = tileScale; // TODO : make this more customizable
 	uint tileHeight = tileScale;
 
-	(void)gridType; // TODO : implement gridType differences
-
-
 	switch ( gridType )
 	{
 		case GRID_SQR:
 			break;
 		case GRID_ISO:
-			tileHeight = tileScale / 2;
 			break;
 		default:
 			ERROR( "Unimplemented grid type", "drawTile" );
@@ -203,11 +199,11 @@ void drawTile( tile_t *tile, uint tileScale, iar2D screenCoords, grid_type_t gri
 		case TILE_GRASS:
 			DrawRectangle( screenCoords[ IX ], screenCoords[ IY ], tileWidth, tileHeight, GREEN );
 			break;
-		case TILE_SAND:
-			DrawRectangle( screenCoords[ IX ], screenCoords[ IY ], tileWidth, tileHeight, YELLOW );
-			break;
 		case TILE_DIRT:
 			DrawRectangle( screenCoords[ IX ], screenCoords[ IY ], tileWidth, tileHeight, BROWN );
+			break;
+		case TILE_SAND:
+			DrawRectangle( screenCoords[ IX ], screenCoords[ IY ], tileWidth, tileHeight, YELLOW );
 			break;
 		case TILE_WATER:
 			DrawRectangle( screenCoords[ IX ], screenCoords[ IY ], tileWidth, tileHeight, BLUE );
