@@ -1,4 +1,5 @@
 #include "../../inc/Engine.hpp"
+#include "../../inc/inputs.hpp"
 
 
 void Engine::inputsStep()
@@ -24,17 +25,16 @@ void Engine::inputsStep()
 
 		if ( IsKeyDown( KEY_LEFT_SHIFT ) || IsKeyDown( KEY_RIGHT_SHIFT ))
 		{
-			panDir[ IX ] *= 3;
-			panDir[ IY ] *= 3;
+			panDir[ IX ] *= SHIFT_COEF;
+			panDir[ IY ] *= SHIFT_COEF;
 		}
 		if ( panDir[ IX ] != 0 || panDir[ IY ] != 0 )
 			this->panMap( panDir );
-
 	}
 
 	// mouse stuff
 	{
-		uiar2D mousePos = { (uint)GetMouseX(), (uint)GetMouseY() };
+		uiar2D mousePos = { uint( GetMouseX() ), uint( GetMouseY() )};
 		if ( IsMouseButtonPressed( MOUSE_LEFT_BUTTON ))
 		{
 			DEBUG( "Mouse left button pressed", "inputsStep" );
@@ -42,7 +42,6 @@ void Engine::inputsStep()
 			tile_t *tile = this->tilemap->getTileAt( mousePos );
 			if ( tile )
 				printFullTile( tile );
-
 		}
 		if ( IsMouseButtonPressed( MOUSE_RIGHT_BUTTON ))
 		{
@@ -50,12 +49,12 @@ void Engine::inputsStep()
 		}
 
 		// zoom with mouse wheel
-		uint zoom = 0;
-		if ( GetMouseWheelMove() > 0 ) { zoom += MAP_ZOOM_SPEED; }
-		if ( GetMouseWheelMove() < 0 ) { zoom -= MAP_ZOOM_SPEED; }
+		float zoom = 0;
+		if ( GetMouseWheelMove() > 0 ) { zoom = MAP_ZOOM_SPEED; }
+		if ( GetMouseWheelMove() < 0 ) { zoom = 1.0f / MAP_ZOOM_SPEED; }
 		if ( IsKeyDown( KEY_LEFT_SHIFT ) || IsKeyDown( KEY_RIGHT_SHIFT ))
 		{
-			zoom *= 3;
+			zoom *= zoom;
 		}
 		if ( zoom != 0 ) { this->tilemap->zoomMap( zoom ); }
 	}

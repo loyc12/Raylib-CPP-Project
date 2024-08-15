@@ -40,12 +40,12 @@ class Engine
 		void panMap( iar2D panDir );
 
 		void scriptsStep();
-
 		void physicsStep();
 
 		void graphicsStep();
 		void drawingStep();
 		void loadImages();
+		bool isOnScreen( iar2D screenPos );
 		void drawTile( tile_type_t tileType, iar2D screenPos );
 
 		void initStep();

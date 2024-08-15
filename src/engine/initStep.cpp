@@ -24,7 +24,10 @@ void Engine::loadImages()
 {
 	INFO( "Loading images", "loadImages" );
 
-	this->tileAtlas = LoadTexture( "/home/loyc/Desktop/Raylib-CPP-Project/assets/textures/tileAtlas.png" );
+	if ( NO_MAP_TEXTURE )
+		return;
+
+	this->tileAtlas = LoadTexture( "./assets/textures/tileAtlas.png" );
 
 	if ( this->tileAtlas.id == 0 )
 	{

@@ -61,7 +61,7 @@ void Tilemap::populateMap()
 /* ====================== Drawing ===================== */
 
 // OBSOLETE
-void Tilemap::drawMap()
+void Tilemap::drawMapDebug()
 {
 	for ( uint y = 0; y < this->size; y++ )
 	{
@@ -72,11 +72,11 @@ void Tilemap::drawMap()
 			iar2D screenCoords = this->getScreenCoords( tile->pos );
 
 			// skip drawing if tile is offscreen
-			if ( screenCoords[ IX ] <= -(int)this->tileScale || screenCoords[ IX ] > GetScreenWidth() ||
-					 screenCoords[ IY ] <= -(int)this->tileScale || screenCoords[ IY ] > GetScreenHeight())
+			if ( screenCoords[ IX ] <= -int( this->tileScale ) || screenCoords[ IX ] > GetScreenWidth() ||
+					 screenCoords[ IY ] <= -int( this->tileScale ) || screenCoords[ IY ] > GetScreenHeight())
 				continue;
 
-			drawTile( tile, this->tileScale, this->getScreenCoords( tile->pos ), this->gridType );
+			drawTileDebug( tile, this->tileScale, this->getScreenCoords( tile->pos ), this->gridType );
 		}
 	}
 }
@@ -115,9 +115,9 @@ tile_t *Tilemap::getTileAt( uiar2D screenCoords )
 	uint screenX = screenCoords[ IX ] - this->offset[ IX ];
 	uint screenY = screenCoords[ IY ] - this->offset[ IY ];
 
-	uint halfTile = this->tileScale / 2;
 	uint tileX = 0;
 	uint tileY = 0;
+	//uint halfTile = this->tileScale / 2;
 
 	switch ( this->gridType )
 	{
@@ -127,8 +127,10 @@ tile_t *Tilemap::getTileAt( uiar2D screenCoords )
 			break;
 
 		case GRID_ISO:
-			tileX = (( 2 * screenY ) + ( screenX - halfTile )) / ( 2 * this->tileScale ); // NOTE : DON'T CHANGE THIS
-			tileY = (( 2 * screenY ) - ( screenX - halfTile )) / ( 2 * this->tileScale ); // I HAD TO MATH IT OUT !!!
+			screenX -= this->tileScale; // NOTE : Centers the hitbox to the visuals
+			screenY -= this->tileScale * 0.75f;
+			tileX = (( 2 * screenY ) + screenX ) / ( 2 * this->tileScale ); // NOTE : DON'T CHANGE THIS
+			tileY = (( 2 * screenY ) - screenX ) / ( 2 * this->tileScale ); // I HAD TO MATH IT OUT !!!
 			break;
 
 		default:
@@ -154,8 +156,8 @@ tile_t *Tilemap::setTile( uint x, uint y, tile_type_t _tileType )
 
 grid_type_t Tilemap::getGridType() { return this->gridType; }
 uint Tilemap::getSize() { return this->size; }
-uint Tilemap::getZoom() { return this->tileScale; }
-void Tilemap::setZoom( uint _tileScale )
+uint Tilemap::getTileScale() { return this->tileScale; }
+void Tilemap::setTileScale( uint _tileScale )
 {
 	if ( _tileScale < MIN_TILE_SCALE )
 		this->tileScale = MIN_TILE_SCALE;
@@ -164,7 +166,7 @@ void Tilemap::setZoom( uint _tileScale )
 	else
 		this->tileScale = _tileScale;
 }
-void Tilemap::zoomMap( int delta ) { this->setZoom( this->tileScale + delta ); }
+void Tilemap::zoomMap( float zoomFactor ) { this->setTileScale( uint( this->tileScale * zoomFactor )); }
 
 iar2D Tilemap::getOffset() { return this->offset; }
 void Tilemap::setOffset( iar2D _offset ) { this->offset = _offset; }

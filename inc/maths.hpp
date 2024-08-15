@@ -4,6 +4,14 @@
 
 typedef unsigned char byte;
 
+#define iar2D array< int, 2 >
+#define iar3D array< int, 3 >
+#define iar4D array< int, 4 >
+
+#define uiar2D array< uint, 2 >
+#define uiar3D array< uint, 3 >
+#define uiar4D array< uint, 4 >
+
 #define TTT template <typename T>
 
 TTT inline T abs( T x )							{ return( x > 0 ? x : -x ); }

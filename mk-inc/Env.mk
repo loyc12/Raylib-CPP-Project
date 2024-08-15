@@ -44,8 +44,16 @@ PLATFORM				?= PLATFORM_DESKTOP
 # If there is a libraylib in both EXAMPLE_RUNTIME_PATH and RAYLIB_INSTALL_PATH, at runtime,
 # the library at EXAMPLE_RUNTIME_PATH, if present, will take precedence over the one at RAYLIB_INSTALL_PATH.
 # RAYLIB_INSTALL_PATH should be the desired full path to libraylib. No relative paths.
-DESTDIR								?= /usr/local
+
+# Used when raylib is on a non-standard path
+ifneq (CUSTOM_RALIB_PATH,)
+	DESTDIR				= CUSTOM_RALIB_PATH
+else
+	DESTDIR				?= /usr/local
+endif
+
 RAYLIB_INSTALL_PATH		?= $(DESTDIR)/lib
+
 # RAYLIB_H_INSTALL_PATH locates the installed raylib header and associated source files.
 RAYLIB_H_INSTALL_PATH	?= $(DESTDIR)/include
 
@@ -256,6 +264,12 @@ ifneq ($(wildcard $(RAYLIB_PATH)/src/.*),)
 endif
 ifneq ($(wildcard /opt/homebrew/lib/.*),)
 	LDFLAGS += -L/opt/homebrew/lib
+endif
+ifneq ($(wildcard $(HOME)/.brew/lib/.*),)
+	LDFLAGS += -L$(HOME)/.brew/lib
+endif
+ifneq ($(wildcard $(HOME)/Homebrew/lib/.*),)
+	LDFLAGS += -L$(HOME)/Homebrew/lib
 endif
 
 ifeq ($(PLATFORM),PLATFORM_DESKTOP)

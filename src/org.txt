@@ -1,0 +1,28 @@
+
+Reoganisation plans :
+
+src
+{
+	engine
+	{
+		0_core{}
+		1_init()
+		2_run()
+		3_close()
+		4_extra()
+		5_inputs()
+		6_scripts()
+		7_physics()
+		8_graphics()
+	}
+	modules
+	{
+		tilemap{}
+		display{}
+	}
+	addons
+	{
+		debug()
+	}
+	main()
+}

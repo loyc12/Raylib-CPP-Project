@@ -3,6 +3,15 @@
 #include "core.hpp"
 #include <sys/types.h>
 
+#define MAP_PAN_SPEED 4
+#define NEW_MAP_SIZE 128
+//#define MAX_MAP_SIZE 512
+#define MAP_ZOOM_SPEED 0.90f
+#define NEW_TILE_SCALE 64
+#define MIN_TILE_SCALE 16
+#define MAX_TILE_SCALE 256
+#define DEF_GRID_TYPE GRID_ISO
+#define NO_MAP_TEXTURE false
 
 typedef enum tile_type_e
 {
@@ -18,9 +27,9 @@ typedef enum grid_type_e
 {
 	GRID_SQR,		// standard cartesian (square) grid
 	GRID_ISO,		// isometric grid
-	GRID_TRI,		// triangular grid
 	GRID_HEX_X,	// hexagonal grid with flat side on the top and bottom
 	GRID_HEX_Y,	// hexagonal grid with flat side on the left and right
+	GRID_TRI,		// triangular grid
 }				grid_type_t;
 
 
@@ -51,20 +60,11 @@ void linkTiles( tile_t *tile1, tile_t *tile2 );
 void linkToNeighbors( tile_t *tile, tile_map_t *map );
 
 // OBSOLETE
-void drawTile( tile_t *tile, uint tileScale, iar2D screenCoords, grid_type_t gridType );
+void drawTileDebug( tile_t *tile, uint tileScale, iar2D screenCoords, grid_type_t gridType );
 
 
 /* ================ Tilemap Class ================ */
 
-
-#define MAP_PAN_SPEED 3
-#define NEW_MAP_SIZE 16
-#define MAP_ZOOM_SPEED 4
-#define NEW_TILE_SCALE 64
-#define MIN_TILE_SCALE 32
-#define MAX_TILE_SCALE 512
-#define DEF_GRID_TYPE GRID_ISO
-#define NO_MAP_TEXTURE false
 
 class Tilemap
 {
@@ -87,7 +87,7 @@ class Tilemap
 		void populateMap();
 
 		// OBSOLETE
-		void drawMap();
+		void drawMapDebug();
 
 		iar2D	getScreenCoords( uiar2D tileCoords );
 
@@ -99,9 +99,9 @@ class Tilemap
 		grid_type_t getGridType();
 		uint getSize();
 
-		uint getZoom();
-		void setZoom( uint _tileScale );
-		void zoomMap( int delta );
+		uint getTileScale();
+		void setTileScale( uint _tileScale );
+		void zoomMap( float zoomFactor );
 
 		iar2D	getOffset();
 		void	setOffset( iar2D offset );

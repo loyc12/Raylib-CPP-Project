@@ -1,13 +1,18 @@
 
 # Defines executable file name
-PROJECT_NAME = TestGame
+PROJECT_NAME	= TestGame
 
+# Build mode for project: DEBUG or RELEASE
+BUILD_MODE		= DEBUG
 
 # Define all source files required
 INC_DIR = inc
 SRC_DIR = src
 OBJ_DIR = obj
 
+# Defines the path for raylib, if different than /usr/local
+# comment out if uneeded
+CUSTOM_RALIB_PATH = ~/.brew
 
 # Defines compiler flags:
 #  -O0									defines optimization level (no optimization, better for debugging)

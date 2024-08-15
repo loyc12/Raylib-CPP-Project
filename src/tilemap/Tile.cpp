@@ -175,7 +175,7 @@ void linkToNeighbors( tile_t *tile, tile_map_t *map )
 }
 
 // OBSOLETE
-void drawTile( tile_t *tile, uint tileScale, iar2D screenCoords, grid_type_t gridType )
+void drawTileDebug( tile_t *tile, uint tileScale, iar2D screenCoords, grid_type_t gridType )
 {
 	uint tileWidth  = tileScale; // TODO : make this more customizable
 	uint tileHeight = tileScale;
@@ -187,7 +187,7 @@ void drawTile( tile_t *tile, uint tileScale, iar2D screenCoords, grid_type_t gri
 		case GRID_ISO:
 			break;
 		default:
-			ERROR( "Unimplemented grid type", "drawTile" );
+			ERROR( "Unimplemented grid type", "drawTileDebug" );
 			return;
 	}
 
